@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/TheCollegeHub/azure-test-track-vscode-extension/blob/main/extension-logo.png" width="400" style="height: auto; display: block; margin: 0 auto;">
+  <img src="https://raw.githubusercontent.com/TheCollegeHub/azure-test-track-vscode-extension/main/extension-logo.png" width="400" style="height: auto; display: block; margin: 0 auto;">
 </p>
 
 # Azure Test Track - Extension (VS CODE)
