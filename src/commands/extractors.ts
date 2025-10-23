@@ -31,6 +31,12 @@ export function extractTestCaseName(editor: vscode.TextEditor, startLine: number
                 testCaseName = match[1]; 
                 break;
             }    
+        } else if (language === 'gherkin') {
+            const gherkinMatch = /^\s*(Scenario|Scenario Outline):\s*(.+)$/.exec(currentLine);
+            if (gherkinMatch) {
+                testCaseName = gherkinMatch[2].trim();
+                break;
+            }
         }
         
         line++;
@@ -57,6 +63,11 @@ export function extractTestCaseNamesFromDocument(editor: vscode.TextEditor): { t
             if (/^(test|it)\s*\(/.test(currentLine) && match) {
                 testCaseNames.push({ testCaseName: match[1], lineNumber: line });
             }
+        } else if (language === 'gherkin') {
+            const gherkinMatch = /^\s*(Scenario|Scenario Outline):\s*(.+)$/.exec(currentLine);
+            if (gherkinMatch) {
+                testCaseNames.push({ testCaseName: gherkinMatch[2].trim(), lineNumber: line });
+            }
         }
         
         line++;
@@ -71,7 +82,8 @@ export function extractTestCaseIds(editor: vscode.TextEditor, line: number): str
     const language = editor.document.languageId;
 
     const currentLineText = document.lineAt(line - 1).text;
-    const match = currentLineText.match(/ADO_IDs:\s*((?:TC_\d+,?\s*)+)/);
+    // Handle both regular comments and Gherkin comments (starting with #)
+    const match = currentLineText.match(/(#\s*)?ADO_IDs:\s*((?:TC_\d+,?\s*)+)/);
 
     if (match) {
         const ids = match[0].match(/TC_(\d+)/g);
@@ -93,9 +105,14 @@ export function extractTestCaseIds(editor: vscode.TextEditor, line: number): str
                 if (/^(test\(|it\()/.test(text)) {
                     break;
                 }
+            } else if (language === 'gherkin') {
+                if (/^\s*(Scenario|Scenario Outline):\s*/.test(text)) {
+                    break;
+                }
             }
 
-            const match = text.match(/ADO_IDs:\s*((?:TC_\d+,?\s*)+)/);
+            // Handle both regular comments and Gherkin comments (starting with #)
+            const match = text.match(/(#\s*)?ADO_IDs:\s*((?:TC_\d+,?\s*)+)/);
             if (match) {
                 const ids = match[0].match(/TC_(\d+)/g);
                 if (ids) {

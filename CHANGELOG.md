@@ -1,4 +1,53 @@
 # Change Log
+
+## v1.3.0
+
+### **New Features**
+
+#### **Gherkin/Feature File Support:**
+
+The extension now supports **Gherkin syntax** for `.feature` files, allowing you to associate Gherkin Scenarios with Azure DevOps test cases.
+
+**Supported Gherkin Elements:**
+- `Scenario: <scenario name>` - Standard scenarios  
+- `Scenario Outline: <scenario name>` - Parameterized scenarios
+
+**Comment Format for Gherkin:**
+In `.feature` files, use hash (`#`) comments to specify ADO_IDs:
+
+```gherkin
+Feature: User Authentication
+
+  # ADO_IDs: TC_123
+  Scenario: User can login with valid credentials
+    Given the user is on the login page
+    When they enter valid credentials  
+    Then they should be redirected to dashboard
+
+  # ADO_IDs: TC_124, TC_125
+  Scenario Outline: User login with different credentials
+    Given the user is on the login page
+    When they enter <username> and <password>
+    Then they should see an error message
+    
+    Examples:
+      | username | password |
+      | invalid  | invalid  |
+      | valid    | invalid  |
+```
+
+**How to Use with Gherkin:**
+
+1. In your `.feature` file, add hash comments with ADO_IDs above scenario lines
+2. Click on any `Scenario:` or `Scenario Outline:` line
+3. Right-click to access association commands, or use the `Associate IDs from Comments` command
+4. The extension will extract scenario names and associate them with Azure Test Cases
+
+**Improvements:**
+- **Enhanced language detection:** The extension now properly detects and handles Gherkin language files
+- **Context menu support:** Right-click context menu now appears when clicking on Gherkin scenario lines
+- **Automatic scenario extraction:** Scenario names are automatically extracted for association with Azure DevOps
+
 ## v1.2.2
 
 ### Bug Fixes:

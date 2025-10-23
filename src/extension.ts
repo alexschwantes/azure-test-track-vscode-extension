@@ -63,6 +63,8 @@ export function activate(context: vscode.ExtensionContext) {
                 isTestLine = /^def\s+test_\w*\s*\(/.test(lineText);
             } else if (language === "javascript" || language === "typescript") {
                 isTestLine = /^(test|it)\(/.test(lineText);
+            } else if (language === "gherkin") {
+                isTestLine = /^\s*(Scenario|Scenario Outline):\s*/.test(lineText);
             }
 
             const contextKey = 'editorHasTestCase';

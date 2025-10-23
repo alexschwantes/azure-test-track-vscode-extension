@@ -23,8 +23,19 @@ The azure-test-track extension provides functionalities for associating automate
 - Provides a convenient way to integrate with Azure DevOps and track test cases.
 - Automatically associates all automated tests with the Azure Test Cases for all file via comments.
 - The extension provides clear visual indicators that show which Azure Test Cases are actually associated with the automated tests.
+- **NEW:** Full support for Gherkin syntax (.feature files) - associate BDD scenarios with Azure DevOps test cases.
 
     Tip: You can use this extension to streamline your testing process in Azure DevOps, improving the traceability and automation of test management.
+
+## 📋 Code Examples
+
+For comprehensive examples of how to use this extension with different programming languages and testing frameworks, see our **[Code Examples Guide](EXAMPLE_CODE.md)**.
+
+The examples include:
+- **JavaScript/TypeScript**: Jest, testing-library, API testing
+- **Python**: pytest, Selenium WebDriver, parametrized tests  
+- **Gherkin**: Feature files, scenarios, scenario outlines
+- **Best Practices**: Comment placement, naming conventions, multiple test case association
 
 ## Requirements
 
@@ -41,7 +52,10 @@ Azure DevOps Setup: Ensure you have the following environment variables set up f
 To associate a test case manually, follow these steps:
 
 ### Option 1
-1. **Select the test line:** Click on the line where your test case is defined, which should start with test( or it(.
+1. **Select the test line:** Click on the line where your test case is defined, which should start with:
+   - `test(` or `it(` (JavaScript/TypeScript)
+   - `def test_` (Python)  
+   - `Scenario:` or `Scenario Outline:` (Gherkin/.feature files)
 
 2. **Right-click and select the command:** Right-click the selected line and choose the `Associate Test to Azure DevOps using Test Name` option from the context menu to manually associate the test filling the Test Case ID and Test Case Type.
 
@@ -57,7 +71,20 @@ To associate a test case manually, follow these steps:
 After filling in all the details, the extension will associate the test case with the specified automation code.
 
 ### Option 3
-1. **Insert the comments**: In the test file, add the ***comments*** with the test IDs in the format `ADO_IDs: TC_1234, TC_5678` above the test function.
+1. **Insert the comments**: In the test file, add the ***comments*** with the test IDs above the test function:
+
+   **JavaScript/TypeScript/Python:**
+   ```javascript
+   // ADO_IDs: TC_1234, TC_5678
+   test('Your test name', () => { ... });
+   ```
+
+   **Gherkin (.feature files):**
+   ```gherkin
+   # ADO_IDs: TC_1234, TC_5678
+   Scenario: User can login successfully
+   ```
+
 2. **Use the command palette:** Alternatively, press Ctrl+Shift+P (Windows/Linux) or Cmd+Shift+P (macOS), type `Associate IDs from Comments`, and select the ***Test Type*** for the associations.
 
 After the command is executed, it will scan for all `ADO_IDs` and associates all ids with the automated test in `Azure Test Case`
@@ -68,9 +95,16 @@ After the command is executed, it will scan for all `ADO_IDs` and associates all
 1. In the test file, run the `View/Hide All Associated Automated Tests` command.
 2. Look at your code. Lines of code associated with test cases will have a green indicator `✓ Associated`, and unassociated lines will have a red indicator `✗ Unassociated`.
 
+## Supported Languages
+
+The extension supports the following languages and patterns:
+
+- **JavaScript/TypeScript**: `test()`, `it()` functions
+- **Python**: `def test_` functions  
+- **Gherkin (.feature files)**: `Scenario:`, `Scenario Outline:` statements
+
 ## Known Issues
 
-- Currently, the extension only supports associating tests based on text patterns such as `test(`, `it(` or `def test_` - *if you see it works for javascript, typescript and python* - for filling Test Case Name automatically but you can still use this extension and fill the name manually through command `Associate Test to Azure DevOps filling Test Name`  
 - There may be issues with environment variable configurations not being recognized when VS Code is run in certain environments.
 
 ## Release Notes
